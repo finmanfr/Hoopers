@@ -1,0 +1,41 @@
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let ball = { x: 300, y: 350, radius: 15, color: "orange", dy: 0 };
+let hoop = { x: 250, y: 100, width: 100, height: 10 };
+
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  ctx.fillStyle = ball.color;
+  ctx.fill();
+  ctx.closePath();
+}
+
+function drawHoop() {
+  ctx.fillStyle = "red";
+  ctx.fillRect(hoop.x, hoop.y, hoop.width, hoop.height);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBall();
+  drawHoop();
+
+  ball.y += ball.dy;
+
+  if (ball.y < hoop.y + hoop.height &&
+      ball.x > hoop.x && ball.x < hoop.x + hoop.width) {
+    alert("You scored!");
+    ball.y = 350;
+    ball.dy = 0;
+  }
+
+  requestAnimationFrame(draw);
+}
+
+canvas.addEventListener("click", () => {
+  ball.dy = -5;
+});
+
+draw();
